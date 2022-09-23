@@ -1,9 +1,9 @@
-import React, { usealbums, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import './App.css';
 
 function App() {
-  const [albums, setAlbums] = usealbums([]);
+  const [albums, setAlbums] = useState([]);
 
   const instance = axios.create({
     baseURL: 'https://jsonplaceholder.typicode.com/'
@@ -15,7 +15,7 @@ function App() {
       .then((resp) => setAlbums(resp))
     return data;
   }
-  console.log("got it",{albums});
+  React.useEffect(getData, [])
 
   const postData = () => {
     const data = instance.post("/albums", {
@@ -30,14 +30,16 @@ function App() {
     }).then((resp) => setAlbums(resp.data))
     return data;
   };
-  console.log("posted",{albums});
+  console.log("posted", { albums });
+  React.useEffect(postData, [])
 
   const removeData = () => {
     const data = instance.delete("/albums/1")
       .then((resp) => setAlbums(resp))
     return data;
   }
-  console.log("removed",{albums});
+  console.log("removed", { albums });
+  React.useEffect(removeData, [])
 
   const updateData = () => {
     const data = instance.put("/albums/1", {
@@ -47,7 +49,9 @@ function App() {
       .then((resp) => setAlbums(resp))
     return data;
   }
-  console.log("updated",{albums});
+  console.log("updated", { albums });
+  React.useEffect(updateData, [])
+
 
 
   return (
@@ -63,8 +67,7 @@ function App() {
             <h4>{photo.title}</h4>
           </div>
         )
-      })
-      }
+      })}
 
     </div>
   );
